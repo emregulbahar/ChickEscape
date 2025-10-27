@@ -1,7 +1,12 @@
 using UnityEngine;
-
+using System;
 public class PlayerController : MonoBehaviour
 {
+
+    public event Action OnPlayerJumped;
+
+
+
 
     [Header("References")]
     [SerializeField] private Transform orTransform;
@@ -151,6 +156,8 @@ public class PlayerController : MonoBehaviour
 
     private void SetPlayerJumping()
     {
+        
+        OnPlayerJumped?.Invoke();
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         
         rb.AddForce(orTransform.up * jumpForce, ForceMode.Impulse);
