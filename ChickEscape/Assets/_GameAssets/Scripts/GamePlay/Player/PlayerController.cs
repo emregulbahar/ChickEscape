@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private KeyCode jumpKey;
     [SerializeField] private float jumpForce;
     [SerializeField] private float jumpCoolDown;
+    [SerializeField] private float airMultipleir;
+    [SerializeField] private float airDrag;
     [SerializeField] private bool canJump;
 
     [Header("Sliding Settings")]
@@ -28,15 +30,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundDrag;
 
-
+    private StateController stateController;
     private Rigidbody rb;
 
     private float horInp, vertInp;
     private Vector3 movDirection;
 
-    private bool isSliding;
+    public bool isSliding;
     private void Awake()
     {
+        stateController = GetComponent<StateController>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
     }
@@ -50,6 +53,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update() {
 
+        SetState();
         SetInput();
         SetPlayerDrag();
         LimitPlayerSpeed();
@@ -67,7 +71,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKeyDown(movKey))
         {
-            
+
             isSliding = false;
         }
         else if (Input.GetKey(jumpKey) && canJump && IsGrounded())
@@ -77,31 +81,60 @@ public class PlayerController : MonoBehaviour
             Invoke(nameof(ResetJumping), jumpCoolDown);
         }
     }
+    
+    private void SetState()
+    {
+        var movDirection = GetMovementDirection();
+        var isGrounded = IsGrounded();
+        var isSliding = IsSliding();
+        var currentState = stateController.GetCurrentState();
+
+
+
+        var newState = currentState switch
+        {
+            _ when movDirection == Vector3.zero && isGrounded && !isSliding => PlayerState.Idle,
+            _ when movDirection != Vector3.zero && isGrounded && !isSliding => PlayerState.Move,
+            _ when movDirection != Vector3.zero && isGrounded && isSliding => PlayerState.Slide,
+            _ when movDirection == Vector3.zero && isGrounded && isSliding => PlayerState.SlideIdle,
+            _ when !canJump && !isGrounded => PlayerState.Jump,
+            _ => currentState
+        };
+
+
+
+        if (newState != currentState)
+        {
+            stateController.ChangeState(newState);
+        }
+
+    }
 
 
     private void SetPlayerMov()
     {
         movDirection = orTransform.forward * vertInp + orTransform.right * horInp;
-        if (isSliding)
-        {
-            rb.AddForce(movDirection.normalized * movSpeed * slideMultiplier, ForceMode.Force);
-        }
-        else
-        {
-            rb.AddForce(movDirection.normalized * movSpeed, ForceMode.Force);
-        }
-    }
 
+
+        float forceMultiplier = stateController.GetCurrentState() switch
+        {
+            PlayerState.Move => 1f,
+            PlayerState.Slide => slideMultiplier,
+            PlayerState.Jump => airMultipleir,
+            _ => 1f
+        };
+        rb.AddForce(movDirection.normalized * movSpeed * forceMultiplier, ForceMode.Force);
+    }
     private void SetPlayerDrag()
     {
-        if (isSliding)
+
+        rb.linearDamping = stateController.GetCurrentState() switch
         {
-            rb.linearDamping = slideDrag;
-        }
-        else
-        {
-            rb.linearDamping = groundDrag;
-        }
+            PlayerState.Move => groundDrag,
+            PlayerState.Slide => slideDrag,
+            PlayerState.Jump => airDrag,
+            _ => rb.linearDamping
+        };    
     }
     
     private void LimitPlayerSpeed()
@@ -128,11 +161,23 @@ public class PlayerController : MonoBehaviour
     {
         canJump = true;
     }
-    
+
 
     private bool IsGrounded()
     {
         return Physics.Raycast(orTransform.position, Vector3.down, playerHight * 0.5f + 0.2f, groundLayer);
     }
+
+
+    private Vector3 GetMovementDirection()
+    {
+        return movDirection.normalized;
+    }
+
+    private bool IsSliding()
+    {
+        return isSliding;
+    }
+        
 
 }
