@@ -508,7 +508,7 @@ Transform:
   m_GameObject: {fileID: 312071742}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.382, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1530,10 +1530,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 618822014}
+  - component: {fileID: 618822015}
   - component: {fileID: 618822013}
   m_Layer: 0
   m_Name: HolyWheat
-  m_TagString: Untagged
+  m_TagString: HolyWheat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1575,6 +1576,21 @@ Transform:
   - {fileID: 312071743}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &618822015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618822012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fada69345bfdd9540930087260f1556d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HolyWheatCollectibles
+  playerController: {fileID: 75758051}
+  forceIncrease: 8
+  resetBoostDuration: 5
 --- !u!1 &741066404
 GameObject:
   m_ObjectHideFlags: 0
@@ -1858,10 +1874,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 900302770}
+  - component: {fileID: 900302771}
   - component: {fileID: 900302769}
   m_Layer: 0
   m_Name: RottenWheat
-  m_TagString: Untagged
+  m_TagString: RottenWheat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1896,13 +1913,28 @@ Transform:
   m_GameObject: {fileID: 900302768}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.733, y: 0.5, z: 0}
+  m_LocalPosition: {x: 2.796, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 109891854}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &900302771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900302768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e6b01e9ee04c642966418ffe9525c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RottenWheatCollectibles
+  playerController: {fileID: 75758051}
+  movIncreaseSpeed: -25
+  resetBoostDuration: 5
 --- !u!1 &1168407236
 GameObject:
   m_ObjectHideFlags: 0
@@ -1912,10 +1944,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1168407238}
+  - component: {fileID: 1168407239}
   - component: {fileID: 1168407237}
   m_Layer: 0
   m_Name: GoldWheat
-  m_TagString: Untagged
+  m_TagString: GoldWheat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1957,6 +1990,21 @@ Transform:
   - {fileID: 6852992040260352540}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1168407239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168407236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae89017494bda641ade8044884573f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GoldWheatCollectibles
+  playerController: {fileID: 75758051}
+  movIncreaseSpeed: 15
+  resetBoostDuration: 5
 --- !u!1 &1197660509
 GameObject:
   m_ObjectHideFlags: 0
@@ -2768,7 +2816,7 @@ Transform:
   m_GameObject: {fileID: 6075751030740246694}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.603, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
