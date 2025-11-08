@@ -1,17 +1,30 @@
 using UnityEngine;
-
+using UnityEngine.UI;
 public class GoldWheatCollectibles : MonoBehaviour, ICollectible
 {
 
     [SerializeField] private WheatDesingSO wheatDesingSO;
     [SerializeField] private PlayerController playerController;
 
-    
+    [SerializeField] private PlayerStateUI playerStateUI;
 
+    private RectTransform playerBoosterTransfrom;
+
+    private Image playerBoosterImage;
+
+    private void Awake() {
+        playerBoosterTransfrom = playerStateUI.GetBoosterSpeedTransform;
+        playerBoosterImage = playerBoosterTransfrom.GetComponent<Image>();
+    }
 
     public void Collect()
     {
         playerController.SetMovSpeed(wheatDesingSO.IncreaseDecreaseMultipler, wheatDesingSO.ResetBoostDuration);
+
+
+        playerStateUI.PlayBoosterUIAnimations(playerBoosterTransfrom, playerBoosterImage, playerStateUI.GetGoldBoosterWheatImage, wheatDesingSO.ActiveSprite, wheatDesingSO.PassiveSprite,
+        wheatDesingSO.ActiveWheatSprite, wheatDesingSO.PassiveWheatSprite, wheatDesingSO.ResetBoostDuration);
+
         Destroy(gameObject);
     }
 }

@@ -4,7 +4,7 @@ public class PlayerController : MonoBehaviour
 {
 
     public event Action OnPlayerJumped;
-
+    public event Action<PlayerState> OnPlayerStateChange;
 
 
 
@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour
         if (newState != currentState)
         {
             stateController.ChangeState(newState);
+            OnPlayerStateChange?.Invoke(newState);
         }
 
     }
