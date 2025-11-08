@@ -28,7 +28,7 @@ public class PlayerHealtUI : MonoBehaviour
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.O))
         {
             AnimateDamage();
         }
