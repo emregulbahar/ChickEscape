@@ -14,30 +14,72 @@ public class TimerUI : MonoBehaviour
 
 
     private float elapsedTime;
+    private bool _isTimerRunning;
+    private Tween _rotationTween;
 
 
     private void Start() 
     {
         PlayRotationAnimation();
         StartTimer();
+
+        GameManager.Instance.OnGameStateChanged += GameManager_OnGameStateChanged;
+    }
+
+
+    private void GameManager_OnGameStateChanged(GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameState.Pause:
+                PauseTimer();
+                break;
+
+            case GameState.Resume:
+                ResumeTimer();
+                break;
+        }
     }
 
     private void PlayRotationAnimation()
     {
-        timerRotatableTransform.DORotate(new Vector3(0f, 0f, -360f), rotationDuration, RotateMode.FastBeyond360)
+        _rotationTween = timerRotatableTransform.DORotate(new Vector3(0f, 0f, -360f), rotationDuration, RotateMode.FastBeyond360)
         .SetLoops(-1, LoopType.Restart)
         .SetEase(rotationEase);
     }
 
     private void StartTimer()
     {
+        _isTimerRunning = true;
         elapsedTime = 0f;
         InvokeRepeating(nameof(UpdateTimerUI), 0f, 1f);
+    }
+
+    private void PauseTimer()
+    {
+        _isTimerRunning = false;
+        CancelInvoke(nameof(UpdateTimerUI));
+        _rotationTween.Pause();
+    }
+
+      private void ResumeTimer()
+    {
+        if(!_isTimerRunning){
+            _isTimerRunning = true;
+            InvokeRepeating(nameof(UpdateTimerUI), 0f, 1f);
+            _rotationTween.Play();
+        }
     }
 
 
     private void UpdateTimerUI()
     {
+
+        if (!_isTimerRunning)
+        {
+            return;
+        }
+        
         elapsedTime += 1;
 
         int minutes = Mathf.FloorToInt(elapsedTime / 60f);
