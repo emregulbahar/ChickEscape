@@ -96,6 +96,7 @@ public class PlayerController : MonoBehaviour
             canJump = false;
             SetPlayerJumping();
             Invoke(nameof(ResetJumping), jumpCoolDown);
+            AudioManager.Instance.Play(SoundType.JumpSound);
         }
     }
     
