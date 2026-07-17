@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -16,11 +17,20 @@ public class CatAnimationController : MonoBehaviour
 
     private void Update() 
     {
+         if(GameManager.Instance.GetCurrentGameState() != GameState.Play && 
+        GameManager.Instance.GetCurrentGameState() != GameState.Resume && 
+        GameManager.Instance.GetCurrentGameState() != GameState.CutScene )
+        {
+            
+            _cataAnimator.enabled = false;
+            return;
+        }
         SetCatAnimations();
     }
 
     private void SetCatAnimations()
     {
+        _cataAnimator.enabled = true;
         var currentCatState = _catStateController.GetCurrentState();
 
         switch (currentCatState)

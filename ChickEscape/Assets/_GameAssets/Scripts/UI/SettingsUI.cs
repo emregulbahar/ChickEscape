@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using MaskTransitions;
 using System;
+using System.Drawing;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -32,8 +33,8 @@ public class SettingsUI : MonoBehaviour
 
 
     private Image _blackBackgroundImage;
-    private bool _isMusicActive;
-    private bool _isSoundActive;
+    [SerializeField]  private bool _isMusicActive;
+    [SerializeField]  private bool _isSoundActive;
 
     private void Awake() {
         _blackBackgroundImage = _blackBackgroundObject.GetComponent<Image>();
