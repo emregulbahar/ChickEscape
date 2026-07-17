@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using MaskTransitions;
+using System;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -18,11 +19,21 @@ public class SettingsUI : MonoBehaviour
     [SerializeField] private Button _resumeButton;
     [SerializeField] private Button _mainMenuButton;
 
+    [Header("Sprites")]
+    [SerializeField] private Sprite _musicActiveSprite;
+    [SerializeField] private Sprite _musicPasiveSprite;
+    [SerializeField] private Sprite _soundActiveSprite;
+    [SerializeField] private Sprite _soundPasiveSprite;
+
+
     [Header("Settings")]
     [SerializeField] private float _animationDuration;
 
 
+
     private Image _blackBackgroundImage;
+    private bool _isMusicActive;
+    private bool _isSoundActive;
 
     private void Awake() {
         _blackBackgroundImage = _blackBackgroundObject.GetComponent<Image>();
@@ -36,8 +47,26 @@ public class SettingsUI : MonoBehaviour
             AudioManager.Instance.Play(SoundType.TransitionSound);
             TransitionManager.Instance.LoadLevel(Consts.SceneNames.MENU_SCENE);
         });
+
+        _musicButton.onClick.AddListener(OnMusicButtonClicked);
+        _soundButton.onClick.AddListener(OnSoundButtonClicked);
     }
 
+    private void OnSoundButtonClicked()
+    {
+        AudioManager.Instance.Play(SoundType.ButtonClickSound);
+        _isSoundActive = !_isSoundActive;
+        _soundButton.image.sprite = _isSoundActive ? _soundActiveSprite : _soundPasiveSprite;
+        AudioManager.Instance.SetSoundEffectsMute(!_isSoundActive);
+    }
+
+    private void OnMusicButtonClicked()
+    {
+        AudioManager.Instance.Play(SoundType.ButtonClickSound);
+        _isMusicActive = !_isMusicActive;
+        _musicButton.image.sprite = _isMusicActive ? _musicActiveSprite : _musicPasiveSprite;
+        BackgroundMusic.Instance.SetMusicMute(!_isMusicActive);
+    }
 
     private void OnSettingsButtonCliked()
     {
